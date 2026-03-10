@@ -1,0 +1,965 @@
+/* ============================================================
+   styles.css — ShiftDesk Employee Scheduler
+   Aesthetic: Industrial-clean with monospace accents
+   ============================================================ */
+
+/* ── Variables ─────────────────────────────────────────────── */
+:root {
+  --bg:           #0f1117;
+  --bg-2:         #181c27;
+  --bg-3:         #1e2333;
+  --surface:      #242a3d;
+  --border:       #2e3553;
+  --border-light: #3a4166;
+  --text:         #e4e9f7;
+  --text-muted:   #7a87b0;
+  --text-dim:     #4a5578;
+  --accent:       #5b8ef5;
+  --accent-dim:   #2d4a8a;
+  --accent-glow:  rgba(91, 142, 245, 0.15);
+  --green:        #3ecf8e;
+  --green-dim:    #1a6645;
+  --yellow:       #f5c842;
+  --yellow-dim:   #5a4710;
+  --red:          #f5615b;
+  --red-dim:      #6b2020;
+  --mono:         'DM Mono', 'Courier New', monospace;
+  --sans:         'DM Sans', system-ui, sans-serif;
+  --radius:       8px;
+  --radius-lg:    14px;
+  --shadow:       0 4px 24px rgba(0,0,0,0.4);
+  --shadow-sm:    0 2px 8px rgba(0,0,0,0.3);
+  --sidebar-w:    240px;
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+input, select, button { font-family: inherit; font-size: inherit; }
+code { font-family: var(--mono); background: var(--surface); padding: 1px 5px; border-radius: 4px; }
+
+.hidden { display: none !important; }
+
+/* ── Shared View Layout ────────────────────────────────────── */
+.view { min-height: 100vh; }
+
+/* ── Brand ─────────────────────────────────────────────────── */
+.brand-icon { font-size: 1.4rem; color: var(--accent); }
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.btn--primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn--primary:hover { background: #7aa4f7; }
+.btn--danger { background: var(--red-dim); color: var(--red); }
+.btn--danger:hover { background: var(--red); color: #fff; }
+.btn--ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+.btn--ghost:hover { background: var(--surface); color: var(--text); }
+.btn--full { width: 100%; justify-content: center; }
+.btn--sm { padding: 5px 10px; font-size: 12px; }
+
+/* ── Form fields ───────────────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+.field-row {
+  display: flex;
+  gap: 14px;
+}
+label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+input, select {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 9px 12px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+input::placeholder { color: var(--text-dim); }
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+input.error { border-color: var(--red); }
+select option { background: var(--bg-3); }
+
+.form-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 680px;
+}
+
+/* ── Login View ────────────────────────────────────────────── */
+.view--login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(91,142,245,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 80% 20%, rgba(62,207,142,0.04) 0%, transparent 50%);
+}
+
+.auth-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-card__brand {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.auth-card__brand h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.auth-card__brand p { color: var(--text-muted); font-size: 13px; }
+.auth-card h2 { font-size: 1.1rem; font-weight: 600; }
+#login-section, #register-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.auth-card__switch { font-size: 13px; color: var(--text-muted); text-align: center; }
+
+/* ── Manager Layout ────────────────────────────────────────── */
+.view--manager {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 1.25rem 0;
+}
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 1.25rem 1.25rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 1rem 0.75rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  text-align: left;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab-btn:hover { background: var(--surface); color: var(--text); }
+.tab-btn.active { background: var(--accent-dim); color: var(--accent); font-weight: 600; }
+
+.sidebar__footer {
+  padding: 1rem 1.25rem 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sidebar__user { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 2.5rem;
+}
+
+/* ── Employee Layout ───────────────────────────────────────── */
+.view--employee {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.emp-header {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.emp-header__brand { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.emp-header__right { display: flex; align-items: center; gap: 12px; }
+.emp-header__name { font-size: 13px; color: var(--text-muted); }
+
+.emp-body { display: flex; flex-direction: column; flex: 1; }
+
+.emp-tabs {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  padding: 0 2rem;
+  gap: 0;
+}
+.emp-tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  padding: 14px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.emp-tab-btn:hover { color: var(--text); }
+.emp-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.emp-tab-panel { padding: 2rem 2.5rem; flex: 1; }
+
+/* ── Panel Header ──────────────────────────────────────────── */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+.panel-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── Week Nav ──────────────────────────────────────────────── */
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.week-nav__label {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  min-width: 130px;
+  text-align: center;
+}
+
+/* ── Schedule Grid ─────────────────────────────────────────── */
+.schedule-grid-container {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+.schedule-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.schedule-grid th {
+  background: var(--bg-3);
+  color: var(--text-muted);
+  text-align: center;
+  padding: 10px 8px;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border);
+}
+.schedule-grid th.schedule-grid__name-col { text-align: left; padding-left: 16px; }
+
+.schedule-grid td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  min-width: 90px;
+  height: 52px;
+}
+.schedule-grid tr:last-child td { border-bottom: none; }
+
+.schedule-grid__name {
+  font-weight: 600;
+  padding-left: 16px !important;
+  color: var(--text);
+  white-space: nowrap;
+  min-width: 130px;
+}
+.schedule-grid__total {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.overtime {
+  color: var(--yellow);
+  font-weight: 600;
+}
+
+.schedule-grid__cell {
+  text-align: center;
+  position: relative;
+  transition: background 0.1s;
+}
+.schedule-grid__cell--editable {
+  cursor: pointer;
+}
+.schedule-grid__cell--editable:hover {
+  background: var(--surface);
+}
+.schedule-grid__cell--filled.schedule-grid__cell--editable:hover .shift-badge {
+  opacity: 0.8;
+}
+
+.shift-badge {
+  display: inline-block;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(91,142,245,0.3);
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── Employee List ─────────────────────────────────────────── */
+.employee-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  max-width: 680px;
+}
+.employee-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+.employee-list__item:last-child { border-bottom: none; }
+.employee-list__item:hover { background: var(--surface); }
+.employee-list__info { display: flex; align-items: center; gap: 14px; }
+.employee-list__info strong { font-weight: 600; }
+.employee-list__info span { color: var(--text-muted); font-size: 12px; }
+.employee-list__hours {
+  font-family: var(--mono);
+  font-size: 11px !important;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ── Availability Editor ───────────────────────────────────── */
+.avail-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 560px;
+}
+.avail-editor__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+}
+.avail-editor__day {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  color: var(--text) !important;
+  min-width: 90px;
+  text-align: left;
+}
+.avail-editor__input {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: 13px;
+  background: var(--bg-3);
+}
+
+/* ── Shift Popup ───────────────────────────────────────────── */
+.shift-popup {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  width: 210px;
+  overflow: hidden;
+}
+.shift-popup__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.shift-popup__close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+}
+.shift-popup__close:hover { background: var(--surface); color: var(--text); }
+
+.shift-popup__quick {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 10px;
+}
+.shift-popup__quick-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 7px 4px;
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.1s;
+  text-align: center;
+}
+.shift-popup__quick-btn:hover { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+.shift-popup__custom {
+  padding: 8px 10px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.shift-popup__custom label { font-size: 11px; }
+.shift-popup__custom-row { display: flex; gap: 6px; }
+.shift-popup__input {
+  flex: 1;
+  padding: 6px 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text);
+}
+.shift-popup__apply {
+  background: var(--accent);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.shift-popup__apply:hover { background: #7aa4f7; }
+.shift-popup__delete {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--border);
+  color: var(--red);
+  padding: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.1s;
+}
+.shift-popup__delete:hover { background: var(--red-dim); }
+
+/* ── Toast ─────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 12px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  max-width: 320px;
+  z-index: 10000;
+}
+.toast--visible { opacity: 1; transform: translateY(0); }
+.toast--success { border-left: 3px solid var(--green); }
+.toast--error   { border-left: 3px solid var(--red); color: var(--red); }
+.toast--warning { border-left: 3px solid var(--yellow); color: var(--yellow); }
+
+/* ── States ────────────────────────────────────────────────── */
+.loading { color: var(--text-muted); padding: 2rem; text-align: center; font-style: italic; }
+.empty-state {
+  padding: 2.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.error-state { color: var(--red); padding: 1.5rem; }
+.hint { font-size: 12px; color: var(--text-dim); margin-bottom: 1rem; }
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .view--manager { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  .sidebar__nav { flex-direction: row; overflow-x: auto; padding: 0.5rem; }
+  .main-content { padding: 1.25rem; }
+  .field-row { flex-direction: column; }
+  .emp-tab-panel { padding: 1.25rem; }
+}
+
+/* ── Availability Hourly Grid ──────────────────────────────── */
+.avail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  user-select: none;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.avail-grid__row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.avail-grid__row--header { margin-bottom: 2px; }
+.avail-grid__day-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 36px;
+  text-align: right;
+  padding-right: 8px;
+  flex-shrink: 0;
+}
+.avail-grid__hour-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  width: 32px;
+  text-align: center;
+  font-family: var(--mono);
+  flex-shrink: 0;
+}
+.avail-grid__cell {
+  width: 32px;
+  height: 28px;
+  border-radius: 4px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+  flex-shrink: 0;
+}
+.avail-grid__cell:hover { border-color: var(--accent); }
+.avail-grid__cell--checked {
+  background: var(--green-dim);
+  border-color: var(--green);
+}
+
+/* ── Schedule Grid Enhancements ────────────────────────────── */
+.schedule-grid__date {
+  font-weight: 400;
+  opacity: 0.6;
+  font-size: 10px;
+  font-family: var(--mono);
+}
+.schedule-grid__position {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-dim);
+  margin-top: 1px;
+}
+.schedule-grid__cell--avail {
+  background: rgba(62, 207, 142, 0.06);
+}
+.schedule-grid__cell--unavail {
+  background: rgba(255,255,255,0.01);
+}
+.schedule-grid__cell--blocked {
+  background: rgba(245, 97, 91, 0.08);
+  cursor: not-allowed;
+}
+.shift-badge--warn {
+  background: rgba(245, 200, 66, 0.15);
+  border-color: rgba(245, 200, 66, 0.4);
+  color: var(--yellow);
+}
+.timeoff-badge {
+  display: inline-block;
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid rgba(245,97,91,0.3);
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ── Grid Legend ───────────────────────────────────────────── */
+.grid-legend {
+  display: flex;
+  gap: 16px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.grid-legend__item {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.grid-legend__item::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid currentColor;
+}
+.grid-legend__item--avail::before  { background: rgba(62,207,142,0.25); border-color: var(--green); }
+.grid-legend__item--unavail::before { background: var(--bg-3); border-color: var(--border); }
+.grid-legend__item--blocked::before { background: var(--red-dim); border-color: var(--red); }
+.grid-legend__item--warn::before   { background: rgba(245,200,66,0.2); border-color: var(--yellow); }
+
+/* ── Time Off List ─────────────────────────────────────────── */
+.timeoff-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  max-width: 720px;
+}
+.timeoff-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.timeoff-list__item:last-child { border-bottom: none; }
+.timeoff-list__info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.timeoff-list__info strong { font-size: 14px; }
+.timeoff-list__dates {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.timeoff-list__reason {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+.timeoff-list__note {
+  font-size: 11px;
+  color: var(--accent);
+}
+.timeoff-list__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Status Badges ─────────────────────────────────────────── */
+.status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.status-badge--warning { background: var(--yellow-dim); color: var(--yellow); }
+.status-badge--success { background: var(--green-dim);  color: var(--green);  }
+.status-badge--danger  { background: var(--red-dim);    color: var(--red);    }
+
+/* ── Nav Badge (pending count) ─────────────────────────────── */
+.nav-badge {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 99px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* ── Print button layout ───────────────────────────────────── */
+.panel-header__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── User Management List (Admin) ──────────────────────────── */
+.user-mgmt-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  max-width: 760px;
+}
+.user-mgmt-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.user-mgmt-list__item:last-child { border-bottom: none; }
+.user-mgmt-list__info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.user-mgmt-list__info strong { font-size: 14px; }
+.user-mgmt-list__email { font-size: 12px; color: var(--text-muted); font-family: var(--mono); }
+.user-mgmt-list__self { font-size: 11px; color: var(--text-dim); }
+.user-mgmt-list__self-note { font-size: 11px; color: var(--text-dim); font-style: italic; }
+.user-mgmt-list__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.user-role-select {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 5px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  width: auto;
+}
+
+/* Hide admin-only tabs until revealed by JS */
+.tab-btn--admin { display: none; }
+.tab-btn--admin:not(.hidden) { display: flex; }
+
+/* ── Reminder Rows ─────────────────────────────────────────── */
+.reminder-row td {
+  height: 36px;
+  border-bottom: 1px solid var(--border);
+}
+.reminder-row:last-child td {
+  border-bottom: none;
+}
+
+/* Label cell */
+.reminder-row__label {
+  padding-left: 16px !important;
+  white-space: nowrap;
+}
+
+/* Empty day cells — no background */
+.reminder-row__cell {
+  text-align: center;
+  vertical-align: middle;
+  font-size: 11px;
+}
+
+/* ── Green — AFI Order ─────────────────────────────────────── */
+.reminder-row__cell--active.reminder-row__cell--green {
+  background: rgba(62, 207, 142, 0.10);
+  border-left: 2px solid rgba(62, 207, 142, 0.4);
+}
+.reminder-badge--green {
+  display: inline-block;
+  background: rgba(62, 207, 142, 0.15);
+  color: var(--green);
+  border: 1px solid rgba(62, 207, 142, 0.35);
+  border-radius: 5px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.reminder-day-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.reminder-row__cell--active.reminder-row__cell--green .reminder-day-label {
+  color: var(--green);
+}
+
+/* ── Purple — WH Order ─────────────────────────────────────── */
+:root {
+  --purple: #a78bfa;
+  --purple-dim: rgba(167, 139, 250, 0.12);
+  --purple-border: rgba(167, 139, 250, 0.35);
+}
+.reminder-row__cell--active.reminder-row__cell--purple {
+  background: var(--purple-dim);
+  border-left: 2px solid var(--purple-border);
+}
+.reminder-badge--purple {
+  display: inline-block;
+  background: var(--purple-dim);
+  color: var(--purple);
+  border: 1px solid var(--purple-border);
+  border-radius: 5px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.reminder-row__cell--active.reminder-row__cell--purple .reminder-day-label {
+  color: var(--purple);
+}
+
+/* ── Red — Damages ─────────────────────────────────────────── */
+.reminder-row__cell--active.reminder-row__cell--red {
+  background: rgba(245, 97, 91, 0.09);
+  border-left: 2px solid rgba(245, 97, 91, 0.35);
+}
+.reminder-badge--red {
+  display: inline-block;
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid rgba(245, 97, 91, 0.35);
+  border-radius: 5px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.reminder-row__cell--active.reminder-row__cell--red .reminder-day-label {
+  color: var(--red);
+}
+
+/* Divider above reminder rows */
+.reminder-row:first-of-type td {
+  border-top: 2px solid var(--border-light);
+}
