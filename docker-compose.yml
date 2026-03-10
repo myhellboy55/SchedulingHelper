@@ -1,0 +1,27 @@
+services:
+
+  # ── Your scheduling app ───────────────────────────────────────
+  app:
+    build: .
+    ports:
+      - "3000:3000"           # access at http://localhost:3000
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/scheduler
+      - JWT_SECRET=ZtnoD68!]6*9LPVZBvzR3W&NMOB3_$Iu   # <-- replace this
+      - JWT_EXPIRES_IN=7d
+    depends_on:
+      - mongo
+    restart: unless-stopped   # auto-restart if it crashes
+
+  # ── MongoDB database ──────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"         # expose to localhost for Compass
+    volumes:
+      - mongo_data:/data/db   # data persists across restarts
+    restart: unless-stopped
+
+# Named volume so database survives container restarts
+volumes:
+  mongo_data:
